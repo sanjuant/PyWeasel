@@ -16,7 +16,7 @@ pip install foobar
 
 ## Usage
 
-```bash
+```
 --url
         Url parameter for http server
 ```
