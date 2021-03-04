@@ -1,6 +1,7 @@
 <p align="center">
   <img width="460" src="https://i.ibb.co/jy7QPYW/weasel-cartoon-119631-230.png">
 </p>
+
 # PyWeasel
 
 PyWeasel is a Python software to help you to find and extract sensitive data.
