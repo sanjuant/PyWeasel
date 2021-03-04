@@ -11,7 +11,10 @@ PyWeasel is a Python software to help you to find and extract sensitive data.
 Use the package manager [pip](https://pip.pypa.io/en/stable/) to install PyWeasel.
 
 ```bash
-pip install foobar
+python -m pip install pip --upgrade --user
+pip install --user pipenv
+pipenv install
+pipenv shell
 ```
 
 ## Usage
