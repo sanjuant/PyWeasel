@@ -15,7 +15,8 @@ def search_files(extension, path='', contains_txt='', exclude_text=''):
                                                                    exclude_text)
     else:
         files += find_files.find_path_of_files_in_folder_yield(path, extension, contains_txt, True, exclude_text)
-    copy_files(files)
+    filenames = copy_files(files)
+    return filenames
 
 
 def sfiles_dir_exist():
@@ -31,9 +32,11 @@ def drives_letter():
 
 
 def copy_files(files):
-
+    filenames = []
     prefix = socket.gethostname() + '_' + getpass.getuser() + '_'
     for file in files:
         if os.path.normpath("PyWeasel") not in file and os.stat(file).st_size >= 1:
-            filename = prefix + os.path.basename(file)
+            filename = prefix + os.path.dirname(file).split(os.sep)[-1] + '_' + os.path.basename(file)
             shutil.copy(file, os.path.join(sfiles_dir_exist(), filename))
+            filenames.append((file, filename))
+    return filenames
