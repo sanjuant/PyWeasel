@@ -14,8 +14,8 @@ from helpers import find_files, csv_manager
 
 def search_files(files, path='', contains_txt='', exclude_text=''):
     files_found = []
+    search_files_regex = '|'.join([re.escape(file) for file in files])
     if os.name == "nt":
-        search_files_regex = '|'.join([re.escape(file) for file in files])
         if path == '':
             for i in drives_letter():
                 files_found += find_files.find_path_of_files_in_folder_yield(i + ':/', search_files_regex, contains_txt,
@@ -25,8 +25,9 @@ def search_files(files, path='', contains_txt='', exclude_text=''):
                                                                          exclude_text)
         return files_found
     elif os.name == "posix":
-        for file in files:
-            files_found += find_files.get_filepaths_with_glob('/', file)
+        path = '/' if path == '' else path
+        files_found += find_files.glob_re(path, search_files_regex)
+        return files_found
 
 
 def sfiles_dir_exist():
@@ -46,7 +47,6 @@ def copy_files(files):
     prefix = socket.gethostname() + '_' + getpass.getuser() + '_'
     for file in files:
         if os.path.normpath("PyWeasel") not in file and os.stat(file).st_size >= 1:
-            # filename = prefix + os.path.dirname(file).split(os.sep)[-1] + '_' + os.path.basename(file)
             filename = slugify(file)
             shutil.copy(file, os.path.join(sfiles_dir_exist(), filename))
             filenames.append((file, filename))

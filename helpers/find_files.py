@@ -1,11 +1,6 @@
-import glob
 import os
 import re
-import time
-from datetime import timedelta
-
-import pandas as pd
-import numpy as np
+from pathlib import Path
 
 
 def find_files_in_folder_yield(path, extension, contains_txt='', sub_folders=True, exclude_text=''):
@@ -73,16 +68,11 @@ def find_path_of_files_in_folder_yield(path, extension, contains_txt='', sub_fol
 # path = 'C:\myFolder'
 # df = findFilesInFolderYieldandGetDf(path, ext, containsTxt, subFolders=True)
 
-def get_filepaths_with_oswalk(root_path: str, file_regex: str):
-    files_paths = []
-    pattern = re.compile(file_regex)
-    for root, directories, files in os.walk(root_path):
-        for file in files:
-            if pattern.match(file):
-                files_paths.append(os.path.join(root, file))
-    return files_paths
-
-
-def get_filepaths_with_glob(root_path: str, file_regex: str):
-    path = glob.glob(os.path.join(root_path, file_regex))
-    return path
+def glob_re(path, regex="", glob_mask="**/*", inverse=False):
+    p = Path(path)
+    if inverse:
+        res = [str(f) for f in p.glob(glob_mask) if not re.search(regex, str(f))]
+    else:
+        res = [str(f) for f in p.glob(glob_mask) if re.search(regex, str(f))]
+    print(res)
+    return res
