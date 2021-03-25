@@ -5,6 +5,7 @@ name = "pypi"
 
 [packages]
 pandas = "*"
+awesome-slugify = "*"
 
 [dev-packages]
 
