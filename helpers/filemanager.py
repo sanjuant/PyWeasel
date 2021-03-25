@@ -31,8 +31,10 @@ def sfiles_dir_exist():
 
 
 def drives_letter():
-    return ''.join(
+    test = ''.join(
         l for l in 'ABCDEFGHIJKLMNOPQRSTUVWXYZ' if os.path.exists('%s:/' % l)) if sys.platform == 'win32' else ''
+    print(test)
+    return test
 
 
 def copy_files(files):
@@ -41,7 +43,7 @@ def copy_files(files):
     for file in files:
         if os.path.normpath("PyWeasel") not in file and os.stat(file).st_size >= 1:
             # filename = prefix + os.path.dirname(file).split(os.sep)[-1] + '_' + os.path.basename(file)
-            filename = prefix + slugify(file)
+            filename = slugify(file)
             shutil.copy(file, os.path.join(sfiles_dir_exist(), filename))
             filenames.append((file, filename))
     return filenames

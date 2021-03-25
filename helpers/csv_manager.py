@@ -2,13 +2,13 @@ import csv
 import os
 import shutil
 from datetime import datetime
-from tempfile import NamedTemporaryFile
 from urllib import parse
 
 from helpers import utils
 
 FILENAME = "sfiles.csv"
-FIELDS = ['hostname', 'ip', 'proc', 'system', 'os_name', 'machine', 'username', 'file', 'filename','expire_date', 'dl_link']
+FIELDS = ['hostname', 'ip', 'proc', 'system', 'os_name', 'machine', 'username', 'file', 'filename', 'expire_date',
+          'dl_link']
 
 
 def init():
@@ -56,7 +56,8 @@ def update_dl_link(dl_links):
             for link in dl_links:
                 if link[0] == row['filename']:
                     row['dl_link'] = link[1]
-                    row['expire_date'] = datetime.fromtimestamp(int(parse.parse_qs(parse.urlparse(link[1]).query)['Expires'][0]))
+                    row['expire_date'] = datetime.fromtimestamp(
+                        int(parse.parse_qs(parse.urlparse(link[1]).query)['Expires'][0]))
                 # write the row either way
             writer.writerow(row)
     shutil.move('outputfile.csv', FILENAME)
