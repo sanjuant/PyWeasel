@@ -12,15 +12,21 @@ from slugify import slugify
 from helpers import find_files, csv_manager
 
 
-def search_files(extension, path='', contains_txt='', exclude_text=''):
-    files = []
-    if path == '':
-        for i in drives_letter():
-            files += find_files.find_path_of_files_in_folder_yield(i + ':/', extension, contains_txt, True,
-                                                                   exclude_text)
-    else:
-        files += find_files.find_path_of_files_in_folder_yield(path, extension, contains_txt, True, exclude_text)
-    return files
+def search_files(files, path='', contains_txt='', exclude_text=''):
+    files_found = []
+    if os.name == "nt":
+        search_files_regex = '|'.join([re.escape(file) for file in files])
+        if path == '':
+            for i in drives_letter():
+                files_found += find_files.find_path_of_files_in_folder_yield(i + ':/', search_files_regex, contains_txt,
+                                                                             True, exclude_text)
+        else:
+            files_found += find_files.find_path_of_files_in_folder_yield(path, search_files_regex, contains_txt, True,
+                                                                         exclude_text)
+        return files_found
+    elif os.name == "posix":
+        for file in files:
+            files_found += find_files.get_filepaths_with_glob('/', file)
 
 
 def sfiles_dir_exist():
@@ -31,10 +37,8 @@ def sfiles_dir_exist():
 
 
 def drives_letter():
-    test = ''.join(
+    return ''.join(
         l for l in 'ABCDEFGHIJKLMNOPQRSTUVWXYZ' if os.path.exists('%s:/' % l)) if sys.platform == 'win32' else ''
-    print(test)
-    return test
 
 
 def copy_files(files):

