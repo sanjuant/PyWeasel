@@ -22,7 +22,7 @@ def find_files_in_folder_yield(path, extension, contains_txt='', sub_folders=Tru
             if entry.is_file() and my_regex_obj.search(entry.path):  #
                 bools = [True for txt in contains_txt if
                          txt in entry.path and (exclude_text == '' or exclude_text not in entry.path)]
-                if len(bools) == len(contains_txt):
+                if len(bools):
                     yield os.path.normpath(entry.path)
 
             elif entry.is_dir() and sub_folders:  # if its a directory, then repeat process as a nested function

