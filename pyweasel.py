@@ -1,9 +1,8 @@
 import argparse
 import datetime
 import os
-import re
 
-from helpers import utils, find_files, csv_manager, filemanager
+from helpers import csv_manager, filemanager
 
 
 def main(arguments):
