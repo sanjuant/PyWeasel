@@ -49,7 +49,8 @@ def copy_files(files):
     prefix = socket.gethostname() + '_' + getpass.getuser() + '_'
     for file in files:
         if os.path.normpath("PyWeasel") not in file and os.stat(file).st_size >= 1:
-            filename = slugify(file)
+            ext = os.path.splitext(file)[1]
+            filename = slugify(os.path.splitext(file)[0]) + ext
             shutil.copy(file, os.path.join(sfiles_dir_exist(), filename))
             filenames.append((file, filename))
     return filenames

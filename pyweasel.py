@@ -39,9 +39,15 @@ def main(arguments):
     # Recherche les fichiers
     files = filemanager.search_files(search_files, path=path, contains_txt=contains_text)
     # Copie les fichiers
-    filenames = filemanager.copy_files(files)
-    # Ajoute chaque fichiers dans le csv
-    csv_manager.add_rows(filenames)
+    string = 'Nous avons trouvé {} fichiers, voulez-vous les copier ? (Oui/Non)'.format(len(files))
+    accept = input(string)
+    if accept.lower() == 'oui':
+        # Ajoute chaque fichiers dans le csv
+        filenames = filemanager.copy_files(files)
+        csv_manager.add_rows(filenames)
+    else:
+        print("Copie interrompu.")
+
 
     # Si l'argument url existe et n'est pas vide
     if arguments.url and arguments.url.strip():
