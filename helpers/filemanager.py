@@ -14,8 +14,10 @@ from helpers import find_files, csv_manager
 
 def search_files(files, path='', contains_txt='', exclude_text=''):
     files_found = []
+    # Echappe les fichiers ou extensions recherchés et crée une regex
     search_files_regex = '|'.join([re.escape(file) for file in files])
-    if os.name == "nt":
+
+    if os.name == "nt":  # Si on est sur windows
         if path == '':
             for i in drives_letter():
                 files_found += find_files.find_path_of_files_in_folder_yield(i + ':/', search_files_regex, contains_txt,
@@ -24,7 +26,7 @@ def search_files(files, path='', contains_txt='', exclude_text=''):
             files_found += find_files.find_path_of_files_in_folder_yield(path, search_files_regex, contains_txt, True,
                                                                          exclude_text)
         return files_found
-    elif os.name == "posix":
+    elif os.name == "posix":  # Si on est sur posix
         path = '/' if path == '' else path
         files_found += find_files.glob_re(path, search_files_regex)
         return files_found
