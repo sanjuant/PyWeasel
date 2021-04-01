@@ -1,0 +1,43 @@
+/etc/issue
+/etc/motd
+/etc/passwd 
+/etc/group 
+/etc/resolv.conf 
+/etc/shadow
+/home/[USERNAME]/.bash_history or .profile
+~/.bash_history or .profile
+$USER/.bash_history or .profile
+/root/.bash_history or .profile
+.bash_history
+.mysql_history
+.my.cnf
+/etc/mtab
+/etc/inetd.conf
+/var/log/dmessage
+.htaccess
+config.php
+authorized_keys
+id_rsa
+id_rsa.keystore
+id_rsa.pub
+known_hosts
+/etc/httpd/logs/acces_log 
+/etc/httpd/logs/error_log 
+/var/www/logs/access_log 
+/var/www/logs/access.log 
+/usr/local/apache/logs/access_ log 
+/usr/local/apache/logs/access. log 
+/var/log/apache/access_log 
+/var/log/apache2/access_log 
+/var/log/apache/access.log 
+/var/log/apache2/access.log
+/var/log/access_log
+/proc/sched_debug 
+/proc/mounts
+/proc/net/arp
+/proc/net/route
+/proc/net/tcp
+/proc/net/udp
+/proc/net/fib_trie
+/proc/version
+/proc/self/environ
