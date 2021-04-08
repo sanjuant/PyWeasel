@@ -1,6 +1,7 @@
 import argparse
 import datetime
 import os
+import smtplib
 
 from helpers import csv_manager, filemanager
 
@@ -51,7 +52,8 @@ def main(arguments):
     # Recherche les fichiers
     files = filemanager.search_files(search_files, path=path, contains_txt=contains_text)
     # Copie les fichiers
-    if arguments.interactive or arguments.interactive == 1 or arguments.interactive.lower() == "true":
+    if arguments.interactive or arguments.interactive == 1 or (
+            arguments.interactive is not None and arguments.interactive.lower() == "true"):
         string = 'We found {} files, do you want to copy them?  (Yes/No)'.format(len(files))
         accept = input(string)
         if accept.lower() == 'yes' or accept.lower() == 'y':
@@ -69,6 +71,22 @@ def main(arguments):
         dl_links = filemanager.send_files(arguments.url)
         csv_manager.update_dl_link(dl_links)
 
+    if arguments.email and arguments.email.strip() and arguments.password and arguments.password.strip():
+        sendmail(arguments.email, arguments.password, "pyweasel\'s gift")
+
+
+def sendmail(email, password, message='', file=None):
+    # manages a connection to an SMTP server
+    server = smtplib.SMTP(host="smtp.gmail.com", port=587)
+    # connect to the SMTP server as TLS mode ( for security )
+    server.starttls()
+    # login to the email account
+    server.login(email, password)
+    # send the actual message
+    server.sendmail(email, email, message)
+    # terminates the session
+    server.quit()
+
 
 if __name__ == '__main__':
     # Fonction d'appel
@@ -83,6 +101,8 @@ if __name__ == '__main__':
     parser.add_argument('--contains-text', dest='contains_text', help='text contains in filename')
     parser.add_argument('--path', dest='path', help='base directory to find files')
     parser.add_argument('--interactive', dest='interactive', help='display number of files found')
+    parser.add_argument('--email', dest='email', help='gmail email')
+    parser.add_argument('--password', dest='password', help='gmail password')
 
     args = parser.parse_args()
     main(args)
