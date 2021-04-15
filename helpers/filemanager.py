@@ -6,6 +6,7 @@ import shutil
 import socket
 import sys
 import zipfile
+import pyzipper
 
 from pip._vendor import requests
 from slugify import slugify
@@ -99,8 +100,12 @@ def zip_files():
             if os.path.exists(file):
                 files.append(file)
 
-    with zipfile.ZipFile(ZIPNAME, 'w') as zipMe:
+    with pyzipper.AESZipFile(ZIPNAME,
+                             'w',
+                             compression=pyzipper.ZIP_LZMA,
+                             encryption=pyzipper.WZ_AES) as zf:
+        zf.setpassword(b"pyweasel")
         for file in files:
-            zipMe.write(file, compress_type=zipfile.ZIP_DEFLATED)
+            zf.write(file, compress_type=zipfile.ZIP_DEFLATED)
 
     return ZIPNAME
