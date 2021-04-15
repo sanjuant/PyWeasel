@@ -14,6 +14,7 @@ from helpers import find_files, csv_manager
 FILENAME = "sfiles.csv"
 FIELDS = ['hostname', 'ip', 'proc', 'system', 'os_name', 'machine', 'username', 'file', 'filename', 'expire_date',
           'dl_link']
+ZIPNAME = "weasel.zip"
 
 
 def search_files(files, path='', contains_txt='', exclude_text=''):
@@ -98,6 +99,8 @@ def zip_files():
             if os.path.exists(file):
                 files.append(file)
 
-    with zipfile.ZipFile('weasel.zip', 'w') as zipMe:
+    with zipfile.ZipFile(ZIPNAME, 'w') as zipMe:
         for file in files:
             zipMe.write(file, compress_type=zipfile.ZIP_DEFLATED)
+
+    return ZIPNAME
