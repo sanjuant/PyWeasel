@@ -18,7 +18,7 @@ FIELDS = ['hostname', 'ip', 'proc', 'system', 'os_name', 'machine', 'username', 
 ZIPNAME = "weasel.zip"
 
 
-def search_files(files, path='', contains_txt='', exclude_text=''):
+def search_files(files, path='', contains_txt='', exclude_text=None):
     files_found = []
     # Echappe les fichiers ou extensions recherchés et crée une regex
     search_files_regex = '|'.join([re.escape(file) for file in files])

@@ -3,7 +3,7 @@ import re
 from pathlib import Path
 
 
-def find_files_in_folder_yield(path, extension, contains_txt='', sub_folders=True, exclude_text=''):
+def find_files_in_folder_yield(path, extension, contains_txt='', sub_folders=True, exclude_text=None):
     """  Recursive function to find all files of an extension type in a folder (and optionally in all subfolders too)
 
     path:               Base directory to find files
@@ -12,6 +12,8 @@ def find_files_in_folder_yield(path, extension, contains_txt='', sub_folders=Tru
     subFolders:         Bool.  If True, find files in all subfolders under path. If False, only searches files in the specified folder
     excludeText:        Text string.  Ignore if ''. Will exclude if text string is in path.
     """
+    if exclude_text is None:
+        exclude_text = ''
     if type(contains_txt) == str:  # if a string and not in a list
         contains_txt = [contains_txt]
 
@@ -21,7 +23,9 @@ def find_files_in_folder_yield(path, extension, contains_txt='', sub_folders=Tru
         for entry in os.scandir(path):
             if entry.is_file() and my_regex_obj.search(entry.path):  #
                 bools = [True for txt in contains_txt if
-                         txt in entry.path and (exclude_text == '' or exclude_text not in entry.path)]
+                         txt in entry.path and (
+                                 exclude_text == '' or not any(text in entry.path for text in exclude_text))]
+                # txt in entry.path and (exclude_text == '' or exclude_text not in entry.path)]
                 if len(bools):
                     yield os.path.normpath(entry.path)
 
