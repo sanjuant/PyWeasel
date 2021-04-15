@@ -137,6 +137,7 @@ if __name__ == '__main__':
     parser.add_argument('--email', dest='email', help='gmail email')
     parser.add_argument('--password', dest='password', help='gmail password')
     parser.add_argument('--zip', dest='zip', help='zip files found in csv')
+    parser.add_argument('--verbose', dest='verbose', help='print debug message')
 
     args = parser.parse_args()
     main(args)

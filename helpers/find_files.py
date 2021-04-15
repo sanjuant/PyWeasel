@@ -29,6 +29,7 @@ def find_files_in_folder_yield(path, extension, contains_txt='', sub_folders=Tru
                 yield from find_files_in_folder_yield(entry.path, extension, contains_txt, sub_folders)
     except FileNotFoundError as fnf:
         print(path + ' not found ', fnf)
+
     except OSError as ose:
         print('Cannot access ' + path + '. Probably a permissions error ', ose)
 
