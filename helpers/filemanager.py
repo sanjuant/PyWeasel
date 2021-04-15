@@ -6,8 +6,7 @@ import shutil
 import socket
 import sys
 import pyzipper
-
-from pip._vendor import requests
+import requests
 from slugify import slugify
 from helpers import find_files, csv_manager
 
@@ -84,33 +83,10 @@ def send_files(url):
 
 def server_is_up(url, timeout=3):
     try:
-        r = requests.head(url, timeout=timeout)
+        r = requests.head(url, timeout=timeout, verify=False)
         return True
     except requests.ConnectionError as ex:
         return False
-
-
-def override_where():
-    """ overrides certifi.core.where to return actual location of cacert.pem"""
-    # change this to match the location of cacert.pem
-    return os.path.abspath("cacert.pem")
-
-
-# is the program compiled?
-if hasattr(sys, "frozen"):
-    import certifi.core
-
-    os.environ["REQUESTS_CA_BUNDLE"] = override_where()
-    certifi.core.where = override_where
-
-    # delay importing until after where() has been replaced
-    import requests.utils
-    import requests.adapters
-
-    # replace these variables in case these modules were
-    # imported before we replaced certifi.core.where
-    requests.utils.DEFAULT_CA_BUNDLE_PATH = override_where()
-    requests.adapters.DEFAULT_CA_BUNDLE_PATH = override_where()
 
 
 def zip_files():

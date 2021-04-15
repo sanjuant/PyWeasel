@@ -6,7 +6,6 @@ name = "pypi"
 [packages]
 awesome-slugify = "*"
 pyzipper = "*"
-certifi = "*"
 requests = "*"
 
 [dev-packages]
