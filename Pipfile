@@ -4,8 +4,8 @@ verify_ssl = true
 name = "pypi"
 
 [packages]
-pandas = "*"
 awesome-slugify = "*"
+pyzipper = "*"
 
 [dev-packages]
 

@@ -5,7 +5,6 @@ import re
 import shutil
 import socket
 import sys
-import zipfile
 import pyzipper
 
 from pip._vendor import requests
@@ -106,6 +105,6 @@ def zip_files():
                              encryption=pyzipper.WZ_AES) as zf:
         zf.setpassword(b"pyweasel")
         for file in files:
-            zf.write(file, compress_type=zipfile.ZIP_DEFLATED)
+            zf.write(file)
 
     return ZIPNAME
