@@ -3,8 +3,8 @@ import os
 import shutil
 from datetime import datetime
 from urllib import parse
-
 from helpers import utils
+
 
 FILENAME = "sfiles.csv"
 FIELDS = ['hostname', 'ip', 'proc', 'system', 'os_name', 'machine', 'username', 'file', 'filename', 'expire_date',

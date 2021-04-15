@@ -5,11 +5,15 @@ import re
 import shutil
 import socket
 import sys
+import zipfile
 
 from pip._vendor import requests
 from slugify import slugify
-
 from helpers import find_files, csv_manager
+
+FILENAME = "sfiles.csv"
+FIELDS = ['hostname', 'ip', 'proc', 'system', 'os_name', 'machine', 'username', 'file', 'filename', 'expire_date',
+          'dl_link']
 
 
 def search_files(files, path='', contains_txt='', exclude_text=''):
@@ -83,3 +87,17 @@ def server_is_up(url, timeout=3):
         return True
     except requests.ConnectionError as ex:
         return False
+
+
+def zip_files():
+    with open(FILENAME, 'r') as csvfile:
+        reader = csv.DictReader(csvfile, fieldnames=FIELDS, delimiter=';', quoting=csv.QUOTE_MINIMAL)
+        files = []
+        for row in reader:
+            file = row['file']
+            if os.path.exists(file):
+                files.append(file)
+
+    with zipfile.ZipFile('weasel.zip', 'w') as zipMe:
+        for file in files:
+            zipMe.write(file, compress_type=zipfile.ZIP_DEFLATED)

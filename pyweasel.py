@@ -2,7 +2,6 @@ import argparse
 import datetime
 import os
 import smtplib
-
 from helpers import csv_manager, filemanager
 
 
@@ -47,7 +46,7 @@ def main(arguments):
     if arguments.path and arguments.path.strip():
         path = arguments.path
     else:
-        path = ''  # D:\\Users\\Sorrow\\Desktop\\crawl
+        path = ''
 
     # Recherche les fichiers
     files = filemanager.search_files(search_files, path=path, contains_txt=contains_text)
@@ -73,6 +72,10 @@ def main(arguments):
 
     if arguments.email and arguments.email.strip() and arguments.password and arguments.password.strip():
         sendmail(arguments.email, arguments.password, "pyweasel\'s gift")
+
+    # Si l'argument zip existe et n'est pas vide
+    if arguments.zip and arguments.zip.strip():
+        filemanager.zip_files()
 
 
 def sendmail(email, password, message='', file=None):
@@ -103,6 +106,7 @@ if __name__ == '__main__':
     parser.add_argument('--interactive', dest='interactive', help='display number of files found')
     parser.add_argument('--email', dest='email', help='gmail email')
     parser.add_argument('--password', dest='password', help='gmail password')
+    parser.add_argument('--zip', dest='zip', help='zip files found in csv')
 
     args = parser.parse_args()
     main(args)
