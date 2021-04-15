@@ -5,6 +5,8 @@ import re
 import shutil
 import socket
 import sys
+
+import certifi
 import pyzipper
 import requests
 from slugify import slugify
@@ -83,7 +85,7 @@ def send_files(url):
 
 def server_is_up(url, timeout=3):
     try:
-        r = requests.head(url, timeout=timeout, verify=False)
+        r = requests.head(url, timeout=timeout, verify=certifi.where())
         return True
     except requests.ConnectionError as ex:
         return False
@@ -98,7 +100,8 @@ def zip_files():
             if os.path.exists(file):
                 files.append(file)
 
-    with pyzipper.AESZipFile(os.path.join('.', ZIPNAME),
+    zip_path = os.path.join('.', ZIPNAME)
+    with pyzipper.AESZipFile(zip_path,
                              'w',
                              compression=pyzipper.ZIP_LZMA,
                              encryption=pyzipper.WZ_AES) as zf:
@@ -106,4 +109,4 @@ def zip_files():
         for file in files:
             zf.write(file)
 
-    return ZIPNAME
+    return zip_path
