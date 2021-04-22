@@ -31,7 +31,7 @@ def main(arguments):
             search_files = list(set(search_files) | {arg_search_files})  # On met la chaine dans un tableau
 
     # Si aucun args pour la recherche de fichier à été défini on utilise les paramètres par défault
-    if not arguments.input_file or not arguments.search_files:
+    if not arguments.input_file and not arguments.search_files:
         # Valeurs recherchés par default
         search_files = ['ovpn', 'key4.db', 'logins.json', 'Login Data', 'Local State', 'authorized_keys', 'id_rsa',
                         'id_rsa.keystore', 'id_rsa.pub', 'known_hosts']
@@ -40,7 +40,6 @@ def main(arguments):
         elif os.name == "posix":  # Si on est sur posix
             search_files = [] + search_files
 
-    print(search_files)
     if arguments.contains_text and arguments.contains_text.strip():
         contains_text = arguments.contains_text
         if os.path.isfile(contains_text):
@@ -145,7 +144,6 @@ if __name__ == '__main__':
     parser.add_argument('--email', dest='email', help='gmail email')
     parser.add_argument('--password', dest='password', help='gmail password')
     parser.add_argument('--zip', dest='zip', help='zip files found in csv')
-    parser.add_argument('--verbose', dest='verbose', help='print debug message')
 
     args = parser.parse_args()
     main(args)
